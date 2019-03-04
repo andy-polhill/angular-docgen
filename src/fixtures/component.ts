@@ -22,5 +22,6 @@ export default class SampleComponent {
   /**
    * onClick output
    */
+
   @Output() onClick = new EventEmitter<boolean>();
 }
