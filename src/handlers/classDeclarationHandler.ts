@@ -1,35 +1,46 @@
-import { clean } from "../utils/jsdoc";
-import traverse, { NodePath } from "@babel/traverse";
+import * as ts from "typescript";
 import { ComponentDoc } from "../parser";
 
-export default (path: any): ComponentDoc => {
+const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): string[] => {
+  const initializer = node.decorators.find(node => {
+    return node.getChildren()
+      .find(ts.isCallExpression)
+      .getChildren()
+      .find(ts.isIdentifier)
+      .getText() === 'Component'
+  })
+  .getChildren()
+  .find(ts.isCallExpression)
+  .getChildren()
+  .find((node: ts.Node): boolean => ts.SyntaxKind.SyntaxList === node.kind)
+  .getChildren()
+  .find(ts.isObjectLiteralExpression)
+  .getChildren()
+  .find((node: ts.Node): boolean => ts.SyntaxKind.SyntaxList === node.kind)
+  .getChildren()
+  .filter(ts.isPropertyAssignment)
+  .find((node: ts.PropertyAssignment): boolean => node.name.getText() === prop)
+  .initializer;
+
+  switch(initializer.kind) {
+    case ts.SyntaxKind.ArrayLiteralExpression:
+      return (<ts.ArrayLiteralExpression>initializer)
+        .elements
+        .map((node: ts.Node) => node.getText().replace(/"/g, ''));
+    default:
+      return [initializer.getText().replace(/"/g, '')];
+  }
+}
+
+
+export default (node: ts.ClassDeclaration): ComponentDoc => {
+
   const componentDoc: ComponentDoc = {
-    description: clean(path.node.leadingComments[0].value),
-    name: path.node.id.name,
-    styleUrls: [],
-    templateUrl: undefined
+    description: (<any>node).jsDoc.map((doc: any) => doc.comment).join('\n'),
+    name: ts.getNameOfDeclaration(node).getText(),
+    styleUrls: getConstructorProperty(node, 'styleUrls'),
+    templateUrl: getConstructorProperty(node, 'templateUrl')[0]
   };
-
-  // console.log('-----');
-  // console.log(path.node);
-
-  const componentDecorator = path.node.decorators.find((decorator: any) => {
-    return decorator.expression.callee.name === "Component";
-  });
-
-  if(!componentDecorator) throw 'Only "Component" decorators are currently supported';
-
-  const args = componentDecorator.expression.arguments;
-
-  args[0].properties.forEach(({ key, value }) => {
-    if(key.name === "templateUrl") {
-      componentDoc.templateUrl = value.value;
-    }
-
-    if(key.name === "styleUrls") {
-      componentDoc.styleUrls = value.elements.map(({ value }) => value);
-    }
-  });
 
   return componentDoc;
 };

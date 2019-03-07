@@ -1,55 +1,59 @@
-import traverse, { NodePath } from "@babel/traverse";
-import * as parser from "@babel/parser";
+import * as ts from "typescript";
 import classDeclarationHandler from "./handlers/classDeclarationHandler";
-import decoratedClassPropertyDeclarationHandler from "./handlers/decoratedClassPropertyHandler";
+import propertyDeclarationHandler from "./handlers/propertyDeclarationHandler";
 
 export interface ComponentDoc {
-  description: string[];
+  description?: string;
   name: string;
-  styleUrls: string[];
-  templateUrl: string;
+  styleUrls?: string[];
+  templateUrl?: string;
 }
 
 export interface PropertyDoc {
-  description: string[];
+  description?: string;
   name: string;
-  options: (string | number)[];
-  type: string;
-  value: string;
+  options?: (string | number)[];
+  type?: string;
+  value?: string;
 }
 
 export interface Doc {
   component: ComponentDoc;
-  inputs: PropertyDoc[];
-  outputs: PropertyDoc[];
+  inputs?: PropertyDoc[];
+  outputs?: PropertyDoc[];
 }
 
 export default (code: string): Doc => {
   const doc: Doc = {
     component: {
-      description: [],
+      description: '',
       name: undefined,
       styleUrls: [],
       templateUrl: undefined
     },
     inputs: [],
     outputs: []
-  };;
+  };
 
-  const ast = parser.parse(code, {
-    sourceType: "module",
-    plugins: ["decorators-legacy", "classProperties", "typescript"]
-  });
+  let ast = ts.createSourceFile('doc.ts', code, ts.ScriptTarget.Latest, true);
 
-  traverse(ast, {
-    ClassDeclaration: (path: NodePath) => {
-      doc.component = classDeclarationHandler(path);
-    },
-    ClassBody: (path: NodePath) => {
-      doc.inputs = decoratedClassPropertyDeclarationHandler(path, "Input");
-      doc.outputs = decoratedClassPropertyDeclarationHandler(path, "Output");
+  const visit = (node: ts.Node) => {
+    switch (node.kind) {
+      case ts.SyntaxKind.ClassDeclaration:
+        doc.component = classDeclarationHandler(<ts.ClassDeclaration>node);
+        ts.forEachChild(node, visit);
+        break;
+      case ts.SyntaxKind.PropertyDeclaration:
+        const inputProperty: PropertyDoc = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Input');
+        inputProperty && doc.inputs.push(inputProperty);
+
+        const outputProperty: PropertyDoc = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Output');
+        outputProperty && doc.outputs.push(outputProperty);
+        break;
     }
-  });
+  }
+          
+  ts.forEachChild(ast, visit);
 
   return doc;
 };

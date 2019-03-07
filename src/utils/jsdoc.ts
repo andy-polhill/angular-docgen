@@ -1,4 +1,7 @@
-export const clean = (text: String) => text
-  .split('*')
-  .map(line => line.trim().replace(/\* /, ''))
-  .filter(line => line.length);
+export const clean = (text: string): string[] => {
+  console.log('test', text);
+  return text
+    .split('/n')
+    .map(line => line.trim())
+    .filter(line => line.length)
+};
