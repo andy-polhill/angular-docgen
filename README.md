@@ -50,23 +50,23 @@ export class SimpleComponent {
 
 ```json
 {
-      name: "SimpleComponent",
-      description: "Simple component with no properties",
-      inputs: [
+      "name": "SimpleComponent",
+      "description": "Simple component with no properties",
+      "inputs": [
         {
-          description: "Is component disabled",
-          name: "disabled",
-          type: "Boolean",
-          value: false
+          "description": "Is component disabled",
+          "name": "disabled",
+          "type": "Boolean",
+          "value": false
         },
         {
-          description: "Type of component",
-          name: "type",
-          type: "String",
-          options: ["primary", "secondary", "tertiary"],
-          value: "primary"
+          "description": "Type of component",
+          "name": "type",
+          "type": "String",
+          "options": ["primary", "secondary", "tertiary"],
+          "value": "primary"
         }
       ]
-      outputs: []
+      "outputs": []
     }
 ```
