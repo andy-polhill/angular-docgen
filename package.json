@@ -1,16 +1,16 @@
 {
-  "name": "angular-doc-gen",
+  "name": "angular-docgen",
   "version": "1.0.0",
   "description": "Low level library for creating decscriptions of angular components",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/parser.js",
+  "types": "dist/parser.d.ts",
   "repository": "git@github.com:thatguynamedandy/angular-docgen.git",
   "scripts": {
     "test": "npm run test-build && npm run test-run",
     "test-watch": "concurrently \"npm:test-build -- --watch\" \"npm:test-run -- --watch\"",
     "test-build": "webpack --config webpack.test.config.js",
     "test-run": "jest __tests__",
-    "build": "tsc"
+    "build": "tsc --module commonjs"
   },
   "engines": {
     "node": "10.4.1"
