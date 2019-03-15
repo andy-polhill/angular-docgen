@@ -43,6 +43,7 @@ const getPropertyValue = (node: ts.PropertyDeclaration, type: any): any => {
 }
 
 const getPropertyDescription = (node: ts.PropertyDeclaration): string => {
+  if(!(<any>node).jsDoc) return null;
   return (<any>node).jsDoc.map((doc: any) => doc.comment).join('');
 }
 
