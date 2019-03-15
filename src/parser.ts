@@ -23,7 +23,7 @@ export interface Doc {
   outputs?: PropertyDoc[];
 }
 
-export default (code: string): Doc => {
+export default function parse(code: string): Doc {
   const doc: Doc = {
     component: {
       description: '',

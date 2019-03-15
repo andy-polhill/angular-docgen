@@ -1,6 +1,6 @@
 {
   "name": "angular-docgen",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha.0",
   "description": "Low level library for creating decscriptions of angular components",
   "main": "dist/parser.js",
   "types": "dist/parser.d.ts",
@@ -10,7 +10,7 @@
     "test-watch": "concurrently \"npm:test-build -- --watch\" \"npm:test-run -- --watch\"",
     "test-build": "webpack --config webpack.test.config.js",
     "test-run": "jest __tests__",
-    "build": "tsc --module commonjs"
+    "build": "tsc"
   },
   "engines": {
     "node": "10.4.1"
