@@ -1,8 +1,8 @@
 import * as ts from "typescript";
 import { ComponentDoc } from "../parser";
 
-const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): string[] => {
-  const initializer = node.decorators.find(node => {
+const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): any => {
+  const initializerNode = node.decorators.find(node => {
     return node.getChildren()
       .find(ts.isCallExpression)
       .getChildren()
@@ -19,8 +19,11 @@ const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): string
   .find((node: ts.Node): boolean => ts.SyntaxKind.SyntaxList === node.kind)
   .getChildren()
   .filter(ts.isPropertyAssignment)
-  .find((node: ts.PropertyAssignment): boolean => node.name.getText() === prop)
-  .initializer;
+  .find((node: ts.PropertyAssignment): boolean => node.name.getText() === prop);
+
+  if(!initializerNode) return null;
+
+  const { initializer } = initializerNode;
 
   switch(initializer.kind) {
     case ts.SyntaxKind.ArrayLiteralExpression:
@@ -28,7 +31,7 @@ const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): string
         .elements
         .map((node: ts.Node) => node.getText().replace(/"/g, ''));
     default:
-      return [initializer.getText().replace(/"/g, '')];
+      return initializer.getText().replace(/"/g, '');
   }
 }
 
@@ -36,10 +39,10 @@ const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): string
 export default (node: ts.ClassDeclaration): ComponentDoc => {
 
   const componentDoc: ComponentDoc = {
-    description: (<any>node).jsDoc.map((doc: any) => doc.comment).join('\n'),
+    description: (<any>node).jsDoc ? (<any>node).jsDoc.map((doc: any) => doc.comment).join('\n') : null,
     name: ts.getNameOfDeclaration(node).getText(),
     styleUrls: getConstructorProperty(node, 'styleUrls'),
-    templateUrl: getConstructorProperty(node, 'templateUrl')[0]
+    templateUrl: getConstructorProperty(node, 'templateUrl')
   };
 
   return componentDoc;
