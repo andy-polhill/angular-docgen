@@ -6,10 +6,7 @@
   "types": "dist/parser.d.ts",
   "repository": "git@github.com:thatguynamedandy/angular-docgen.git",
   "scripts": {
-    "test": "npm run test-build && npm run test-run",
-    "test-watch": "concurrently \"npm:test-build -- --watch\" \"npm:test-run -- --watch\"",
-    "test-build": "webpack --config webpack.test.config.js",
-    "test-run": "jest __tests__",
+    "test": "jest ./src",
     "build": "tsc"
   },
   "engines": {
@@ -18,16 +15,13 @@
   "author": "thatguynamedandy",
   "license": "ISC",
   "devDependencies": {
-    "@angular/core": "^7.2.3",
-    "concurrently": "^4.1.0",
-    "jest": "^24.0.0",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.11.3",
+    "jest": "^24.5.0",
     "prettier": "^1.16.4",
-    "typescript": "^3.3.3",
-    "webpack": "^4.29.3",
-    "webpack-cli": "^3.2.3",
-    "@types/jest": "^24.0.0",
-    "raw-loader": "^1.0.0",
-    "clean-webpack-plugin": "^1.0.1",
-    "ts-loader": "^5.3.3"
+    "ts-jest": "^24.0.0",
+    "ts-loader": "^5.3.3",
+    "tslib": "^1.9.3",
+    "typescript": "^3.3.3"
   }
 }

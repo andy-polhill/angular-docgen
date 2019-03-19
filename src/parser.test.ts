@@ -1,8 +1,12 @@
 import parse from './parser';
-import component_1 from "!raw-loader!./fixtures/component_1";
-import component_2 from "!raw-loader!./fixtures/component_2";
+import { readFileSync } from 'fs';
+import { resolve } from 'path'
+
+let component_1: string = readFileSync(resolve(__dirname, './fixtures/component_1.txt'), 'utf8').toString();
+let component_2: string = readFileSync(resolve(__dirname, './fixtures/component_2.txt'), 'utf8').toString();
 
 describe('Parser Component 1', () => {
+
   it("should parse a component decorator", () => {
     expect(parse(component_1).component).toEqual({
         name: "SampleComponent",
