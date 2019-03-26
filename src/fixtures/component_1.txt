@@ -8,6 +8,9 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
   styleUrls: ["styles1.css", "styles2.css"]
 })
 export default class SampleComponent {
+
+  value: string = false;
+
   /**
    * Is component disabled
    * Two line comment

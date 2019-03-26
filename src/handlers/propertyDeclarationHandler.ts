@@ -2,15 +2,20 @@ import * as ts from "typescript";
 import { PropertyDoc } from "../parser";
 
 const getPropertyDecorator = (node: ts.PropertyDeclaration): string => {
-  return node.getChildren()
-    .find((node: ts.Node) => ts.SyntaxKind.SyntaxList === node.kind)
-    .getChildren()
-    .find(ts.isDecorator)
-    .getChildren()
-    .find(ts.isCallExpression)
-    .getChildren()
-    .find(ts.isIdentifier)
-    .getText(); 
+
+  try {
+    return node.getChildren()
+      .find((node: ts.Node) => ts.SyntaxKind.SyntaxList === node.kind)
+      .getChildren()
+      .find(ts.isDecorator)
+      .getChildren()
+      .find(ts.isCallExpression)
+      .getChildren()
+      .find(ts.isIdentifier)
+      .getText();
+  } catch(e) {
+    return;
+  }
 };
 
 const getPropertyName = (node: ts.PropertyDeclaration): string => node.name.getText();
