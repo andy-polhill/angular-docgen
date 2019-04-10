@@ -40,9 +40,11 @@ const getPropertyType = (node: ts.PropertyDeclaration): any => {
 const getPropertyValue = (node: ts.PropertyDeclaration, type: any): any => {
   const value = node.initializer.getText();
 
-  switch(type) {
-    case 'Number': return parseInt(value, 10);
-    case 'Boolean': return (value === 'true') ? true : false;
+  if(!type) return value.replace(/"/g, '');
+
+  switch(type.toLowerCase()) {
+    case 'number': return parseInt(value, 10);
+    case 'boolean': return (value === 'true') ? true : false;
     default: return value.replace(/"/g, '');
   }
 }
