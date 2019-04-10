@@ -1,6 +1,6 @@
 {
   "name": "angular-docgen",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.3",
   "description": "Low level library for creating decscriptions of angular components",
   "main": "dist/parser.js",
   "types": "dist/parser.d.ts",
