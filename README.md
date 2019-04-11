@@ -11,18 +11,7 @@ _It does work in it's current form with the example component, however the selec
 
 This is a low level library for parsing Angular components into JSON, inspired by [react-docgen](https://github.com/react/react-docgen). The intended use case is for documenting design systems where you want full control over the visuals.
 
-It works by using the typescript parser to parse an Angular component file into an Abstract Syntax Tree ([AST]()).
-
-If you fancy a go at working with this I recommend using astexplorer.net. Paste the sample component in, use the Typescript loader and then you can see the AST that you need to navigate.
-
-### Example usage (with webpack raw loader)
-
-```ts
-import parse, { ComponentDescription } from 'angular-docgen';
-import component from "!raw-loader!./component";
-
-const description: ComponentDescription = parse(component);
-```
+Use in conjunction with [angular-docgen-loader](https://github.com/thatguynamedandy/angular-docgen-loader) to load the component definitions into your angular project.
 
 ### Sample input
 
@@ -30,19 +19,28 @@ const description: ComponentDescription = parse(component);
 import { Component, Input } from "@angular/core";
 
 /**
- * Component with input decorators
+ * A nice button component
  */
-@Component({ template: "<p>Sample</p>" })
-export class SimpleComponent {
+@Component({
+  selector: "my-button",
+  templateUrl: "template.html",
+  styleUrls: ["styles1.css", "styles2.css"]
+})
+export class Button {
   /**
-   * Is component disabled
+   * Is button disabled
    */
   @Input() disabled: Boolean = false;
 
   /**
-   * Type of component
+   * Button variant
    */
-  @Input() type: "primary" | "secondary" = "primary";
+  @Input() variant: "primary" | "secondary" = "primary";
+
+  /**
+   * onClick output
+   */
+  @Output() onClick = new EventEmitter<boolean>();
 }
 ```
 
@@ -50,23 +48,35 @@ export class SimpleComponent {
 
 ```json
 {
-      "name": "SimpleComponent",
-      "description": "Simple component with no properties",
-      "inputs": [
-        {
-          "description": "Is component disabled",
-          "name": "disabled",
-          "type": "Boolean",
-          "value": false
-        },
-        {
-          "description": "Type of component",
-          "name": "type",
-          "type": "String",
-          "options": ["primary", "secondary", "tertiary"],
-          "value": "primary"
-        }
-      ]
-      "outputs": []
-    }
+  "component": {
+    "name": "Button",
+    "description": "A nice button component",
+    "templateUrl": "template.html",
+    "selector": "my-button",
+    "styleUrls": [
+      "styles1.css",
+      "styles2.css",
+    ],
+  },
+  "inputs": [{
+    "description": "Is button disabled",
+    "name": "disabled",
+    "type": "Boolean",
+    "value": false
+  }, {
+    "description": "Button variant",
+    "name": "type",
+    "variant": "String",
+    "options": ["primary", "secondary"],
+    "value": "primary"
+  }],
+  "outputs": [{
+    "description": "onClick output",
+    "name": "onClick",
+    "value": "new EventEmitter<boolean>()",
+  }]
+}
 ```
+It works by using the typescript parser to parse an Angular component file into an Abstract Syntax Tree (AST).
+
+If you fancy a go at working with this I recommend using astexplorer.net. Paste the sample component in, use the Typescript loader and then you can see the AST that you need to navigate.
