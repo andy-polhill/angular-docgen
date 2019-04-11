@@ -5,6 +5,7 @@ import propertyDeclarationHandler from "./handlers/propertyDeclarationHandler";
 export interface ComponentDoc {
   description?: string;
   name: string;
+  selector?: string,
   styleUrls?: string[];
   templateUrl?: string;
 }
@@ -28,6 +29,7 @@ export default function parse(code: string): Doc {
     component: {
       description: '',
       name: undefined,
+      selector: '',
       styleUrls: [],
       templateUrl: undefined
     },

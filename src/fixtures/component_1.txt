@@ -4,6 +4,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
  * Sample Component
  */
 @Component({
+  selector: "my-button",
   templateUrl: "template.html",
   styleUrls: ["styles1.css", "styles2.css"]
 })

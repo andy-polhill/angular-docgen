@@ -12,6 +12,7 @@ describe('Parser Component 1', () => {
         name: "SampleComponent",
         description: "Sample Component",
         templateUrl: "template.html",
+        selector: "my-button",
         styleUrls: [
           "styles1.css",
           "styles2.css",
