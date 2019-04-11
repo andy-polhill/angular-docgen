@@ -41,6 +41,7 @@ export default (node: ts.ClassDeclaration): ComponentDoc => {
   const componentDoc: ComponentDoc = {
     description: (<any>node).jsDoc ? (<any>node).jsDoc.map((doc: any) => doc.comment).join('\n') : null,
     name: ts.getNameOfDeclaration(node).getText(),
+    selector: getConstructorProperty(node, 'selector'),
     styleUrls: getConstructorProperty(node, 'styleUrls'),
     templateUrl: getConstructorProperty(node, 'templateUrl')
   };
