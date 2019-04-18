@@ -43,6 +43,11 @@ Two line comment`,
       description: "No default",
       name: "empty",
       type: "string",
+    }, {
+      description: "non primitive",
+      name: "hero",
+      type: "Hero",
+      value: "Superman"
     }]);
   });
 
