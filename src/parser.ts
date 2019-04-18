@@ -5,13 +5,13 @@ import propertyDeclarationHandler from "./handlers/propertyDeclarationHandler";
 export interface ComponentDoc {
   description?: string;
   name?: string;
-  selector?: string,
+  selector?: string;
   styleUrls?: string[];
   templateUrl?: string;
 }
 
 export interface PropertyDoc {
-  description?: (string | null);
+  description?: string | null;
   name?: string;
   options?: (string | number)[] | null;
   type?: string | null;
@@ -37,7 +37,7 @@ export default function parse(code: string): Doc {
     outputs: []
   };
 
-  let ast = ts.createSourceFile('doc.ts', code, ts.ScriptTarget.Latest, true);
+  let ast = ts.createSourceFile("doc.ts", code, ts.ScriptTarget.Latest, true);
 
   const visit = (node: ts.Node) => {
     switch (node.kind) {
@@ -46,20 +46,26 @@ export default function parse(code: string): Doc {
         ts.forEachChild(node, visit);
         break;
       case ts.SyntaxKind.PropertyDeclaration:
-        const inputProperty: PropertyDoc | null = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Input');
-        if(inputProperty) {
+        const inputProperty: PropertyDoc | null = propertyDeclarationHandler(
+          <ts.PropertyDeclaration>node,
+          "Input"
+        );
+        if (inputProperty) {
           doc.inputs!.push(inputProperty);
         }
 
-        const outputProperty: PropertyDoc | null = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Output');
-        if(outputProperty) {
+        const outputProperty: PropertyDoc | null = propertyDeclarationHandler(
+          <ts.PropertyDeclaration>node,
+          "Output"
+        );
+        if (outputProperty) {
           doc.outputs!.push(outputProperty);
         }
         break;
     }
-  }
-          
+  };
+
   ts.forEachChild(ast, visit);
 
   return doc;
-};
+}
