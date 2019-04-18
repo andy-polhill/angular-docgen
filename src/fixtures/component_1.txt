@@ -14,33 +14,49 @@ export default class SampleComponent {
   value: string = false;
 
   /**
-   * Is component disabled
-   * Two line comment
+   * boolean type
+   * with second line
    */
   @Input() disabled: boolean = false;
 
   /**
-   * Type of component
+   * string type
    */
-  @Input() type: "primary" | "secondary" = "primary";
+  @Input() name: string = "test";
 
   /**
-   * Count of things
+   * number type
    */
   @Input() count: number = 1;
 
   /**
-   * No default
+   * string literal types
    */
-  @Input() empty: string;
+  @Input() type: "primary" | "secondary" = "primary";
 
   /**
-   * onClick output
+   * numeric literal types
    */
-  @Output() onClick = new EventEmitter<boolean>();
+  @Input() type: 1 | 2 | 3 = 1;
+
+  /**
+   * variant types
+   */
+  @Input() what: number | string = "test";
+
+  /**
+   * no default
+   */
+  @Input() empty: string;
 
   /**
    * non primitive
    */
   @Input() hero: Hero = Superman;
+
+  /**
+   * output property
+   */
+  @Output() onClick = new EventEmitter<boolean>();
+
 }

@@ -21,26 +21,41 @@ describe('Parser Component 1', () => {
   });
 
   it("should parse a components inputs", () => {
-
     expect(parse(component_1).inputs).toMatchObject([{
-      description: `Is component disabled
-Two line comment`,
+      description: `boolean type
+with second line`,
       name: "disabled",
       type: "boolean",
       value: false,
     }, {
-      description: "Type of component",
+      description: "string type",
+      name: "name",
+      type: "string",
+      value: "test"
+    }, {
+      description: "number type",
+      name: "count",
+      type: "number",
+      value: 1
+    }, {
+      description: "string literal types",
       name: "type",
       type: "string",
       options: ["primary", "secondary"],
       value: "primary"
     }, {
-      description: "Count of things",
-      name: "count",
+      description: "numeric literal types",
+      name: "type",
       type: "number",
+      options: [1, 2, 3],
       value: 1
     }, {
-      description: "No default",
+      description: "variant types",
+      name: "what",
+      type: "any",
+      value: "test"
+    }, {
+      description: "no default",
       name: "empty",
       type: "string",
     }, {
@@ -54,7 +69,7 @@ Two line comment`,
   it('should parse a components outputs', () => {
 
     expect(parse(component_1).outputs).toMatchObject([{
-      description: "onClick output",
+      description: "output property",
       name: "onClick",
       value: "new EventEmitter<boolean>()",
     }]);
