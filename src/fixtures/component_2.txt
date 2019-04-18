@@ -2,5 +2,8 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({})
 export default class SampleComponent {
+
+  count: number = 1;
+
   @Input() disabled: boolean = false;
 }

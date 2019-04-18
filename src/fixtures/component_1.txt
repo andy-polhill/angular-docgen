@@ -30,6 +30,11 @@ export default class SampleComponent {
   @Input() count: number = 1;
 
   /**
+   * Multiple type options
+   */
+  @Input() what: number | boolean = 1;
+
+  /**
    * No default
    */
   @Input() empty: string;
