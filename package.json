@@ -8,7 +8,8 @@
   "scripts": {
     "test": "jest ./src",
     "build": "tsc",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "prepublish": "npm run build"
   },
   "engines": {
     "node": "10.4.1"

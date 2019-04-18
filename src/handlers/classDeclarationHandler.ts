@@ -1,29 +1,23 @@
 import * as ts from "typescript";
 import { ComponentDoc } from "../parser";
 
-const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): any => {
-  const initializerNode = node.decorators.find(node => {
-    return node.getChildren()
-      .find(ts.isCallExpression)
-      .getChildren()
-      .find(ts.isIdentifier)
-      .getText() === 'Component'
-  })
-  .getChildren()
-  .find(ts.isCallExpression)
-  .getChildren()
-  .find((node: ts.Node): boolean => ts.SyntaxKind.SyntaxList === node.kind)
-  .getChildren()
-  .find(ts.isObjectLiteralExpression)
-  .getChildren()
-  .find((node: ts.Node): boolean => ts.SyntaxKind.SyntaxList === node.kind)
-  .getChildren()
-  .filter(ts.isPropertyAssignment)
-  .find((node: ts.PropertyAssignment): boolean => node.name.getText() === prop);
+const getConstructorProperty = (node: ts.ClassDeclaration, propName: string): null | string | string[]  => {
 
-  if(!initializerNode) return null;
+  const decorators: ts.NodeArray<ts.Decorator> = <ts.NodeArray<ts.Decorator>>node.decorators;
 
-  const { initializer } = initializerNode;
+  if (!decorators) return null;
+
+  const componentNode: ts.Decorator = <ts.Decorator> decorators.find((decorator: ts.Decorator) =>
+    (<ts.CallExpression> decorator.expression).expression.getText() === 'Component');
+
+  const decoratorArgs: ts.NodeArray<ts.Node> = (<ts.CallExpression>componentNode.expression).arguments;
+  const propertyList: ts.ObjectLiteralExpression = <ts.ObjectLiteralExpression> decoratorArgs.find((node: ts.Node) => node.kind === ts.SyntaxKind.ObjectLiteralExpression);
+  const decoratorProps: ts.NodeArray<ts.ObjectLiteralElementLike> = propertyList.properties;
+  const propertyNode: ts.PropertyAssignment = <ts.PropertyAssignment> decoratorProps.find((node: ts.ObjectLiteralElementLike) => node.name!.getText() === propName);
+
+  if(!propertyNode) return null;
+
+  const initializer: ts.Expression = propertyNode.initializer;
 
   switch(initializer.kind) {
     case ts.SyntaxKind.ArrayLiteralExpression:
@@ -35,15 +29,16 @@ const getConstructorProperty = (node: ts.ClassDeclaration, prop: string): any =>
   }
 }
 
-
 export default (node: ts.ClassDeclaration): ComponentDoc => {
+
+  const className: ts.DeclarationName = <ts.DeclarationName>ts.getNameOfDeclaration(node);
 
   const componentDoc: ComponentDoc = {
     description: (<any>node).jsDoc ? (<any>node).jsDoc.map((doc: any) => doc.comment).join('\n') : null,
-    name: ts.getNameOfDeclaration(node).getText(),
-    selector: getConstructorProperty(node, 'selector'),
-    styleUrls: getConstructorProperty(node, 'styleUrls'),
-    templateUrl: getConstructorProperty(node, 'templateUrl')
+    name: className && className.getText(),
+    selector: <string> getConstructorProperty(node, 'selector'),
+    styleUrls: <string[]> getConstructorProperty(node, 'styleUrls'),
+    templateUrl: <string> getConstructorProperty(node, 'templateUrl')
   };
 
   return componentDoc;
