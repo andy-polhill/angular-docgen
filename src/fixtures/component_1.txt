@@ -24,6 +24,11 @@ export default class SampleComponent {
   @Input() type: "primary" | "secondary" = "primary";
 
   /**
+   * Count of things
+   */
+  @Input() count: number = 1;
+
+  /**
    * onClick output
    */
 

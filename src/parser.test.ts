@@ -34,6 +34,11 @@ Two line comment`,
       type: "string",
       options: ["primary", "secondary"],
       value: "primary"
+    }, {
+      description: "Count of things",
+      name: "count",
+      type: "number",
+      value: 1
     }]);
   });
 
