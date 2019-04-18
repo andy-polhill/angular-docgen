@@ -11,12 +11,23 @@ const getPropertyType = (node: ts.PropertyDeclaration): string | null => {
     case ts.SyntaxKind.TypeReference:
       return node.type.getText();
     case ts.SyntaxKind.UnionType:
-      switch(<number> node.kind) {
-        case ts.SyntaxKind.StringLiteral: return 'string'; 
-        case ts.SyntaxKind.NumericLiteral: return 'number'; 
-        default: return 'string';
-      }
+      const unionNode: ts.UnionTypeNode = <ts.UnionTypeNode>node.type;
+      const types: ts.NodeArray<ts.TypeNode> = unionNode.types;
+
+      return types.reduce((type, typeNode: ts.TypeNode, count: number) => {
+
+        if(ts.isLiteralTypeNode(typeNode) && ts.isStringLiteral(typeNode.literal)) {
+          return (type === 'string' || count === 0) ? 'string' : 'any';
+        }
+
+        if(ts.isLiteralTypeNode(typeNode) && ts.SyntaxKind.FirstLiteralToken === typeNode.literal.kind) {
+          return (type === 'number' || count === 0) ? 'number' : 'any';
+        }
+
+        return (type === typeNode.getText() || count === 0) ? typeNode.getText() : 'any';
+      }, 'string');
   }
+
   return node.type.getText()
 };
 
@@ -46,17 +57,29 @@ const getPropertyDescription = (node: ts.PropertyDeclaration): string | null => 
   return (<any>node).jsDoc.map((doc: any) => doc.comment).join('');
 }
 
-const getPropertyOptions = (node: ts.PropertyDeclaration): string[] | null => {
+const getPropertyOptions = (node: ts.PropertyDeclaration): (string | number)[] | null => {
   if (typeof node.type === 'undefined') return null;
 
-  switch(node.type.kind) {
-    case ts.SyntaxKind.UnionType: {
-      const typesNode: ts.NodeArray<ts.TypeNode> = (<ts.UnionTypeNode>node.type).types;
-      return typesNode.map((node: ts.TypeNode) => node.getText().replace(/"/g, ''));
+  if (ts.isUnionTypeNode(node.type)) {
 
-    }
-    default: return null
+    const typesNode: ts.NodeArray<ts.TypeNode> = (<ts.UnionTypeNode>node.type).types;
+    if(!typesNode.some(ts.isLiteralTypeNode)) return null;
+
+    return typesNode.map((node: ts.TypeNode) => {
+
+      if(ts.isLiteralTypeNode(node) && ts.isStringLiteral(node.literal)) {
+        return node.getText().replace(/"/g, '');
+      }
+
+      if(ts.isLiteralTypeNode(node) && ts.SyntaxKind.FirstLiteralToken === node.literal.kind) {
+        return parseInt(node.getText(), 10);
+      }
+
+      return node.getText().replace(/"/g, '')
+    });
   }
+
+  return null;
 }
 
 export default (node: ts.PropertyDeclaration, decoratorType: string): PropertyDoc | null => {
