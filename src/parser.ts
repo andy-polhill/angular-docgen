@@ -4,18 +4,18 @@ import propertyDeclarationHandler from "./handlers/propertyDeclarationHandler";
 
 export interface ComponentDoc {
   description?: string;
-  name: string;
+  name?: string;
   selector?: string,
   styleUrls?: string[];
   templateUrl?: string;
 }
 
 export interface PropertyDoc {
-  description?: string;
-  name: string;
-  options?: (string | number)[];
-  type?: string;
-  value?: string;
+  description?: (string | null);
+  name?: string;
+  options?: (string | number)[] | null;
+  type?: string | null;
+  value?: string | number | boolean;
 }
 
 export interface Doc {
@@ -27,9 +27,9 @@ export interface Doc {
 export default function parse(code: string): Doc {
   const doc: Doc = {
     component: {
-      description: '',
+      description: undefined,
       name: undefined,
-      selector: '',
+      selector: undefined,
       styleUrls: [],
       templateUrl: undefined
     },
@@ -46,11 +46,15 @@ export default function parse(code: string): Doc {
         ts.forEachChild(node, visit);
         break;
       case ts.SyntaxKind.PropertyDeclaration:
-        const inputProperty: PropertyDoc = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Input');
-        inputProperty && doc.inputs.push(inputProperty);
+        const inputProperty: PropertyDoc | null = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Input');
+        if(inputProperty) {
+          doc.inputs!.push(inputProperty);
+        }
 
-        const outputProperty: PropertyDoc = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Output');
-        outputProperty && doc.outputs.push(outputProperty);
+        const outputProperty: PropertyDoc | null = propertyDeclarationHandler(<ts.PropertyDeclaration>node, 'Output');
+        if(outputProperty) {
+          doc.outputs!.push(outputProperty);
+        }
         break;
     }
   }

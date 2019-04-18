@@ -21,22 +21,24 @@ describe('Parser Component 1', () => {
   });
 
   it("should parse a components inputs", () => {
+
     expect(parse(component_1).inputs).toMatchObject([{
       description: `Is component disabled
 Two line comment`,
       name: "disabled",
-      type: "Boolean",
+      type: "boolean",
       value: false,
     }, {
       description: "Type of component",
       name: "type",
-      type: "String",
+      type: "string",
       options: ["primary", "secondary"],
       value: "primary"
     }]);
   });
 
   it('should parse a components outputs', () => {
+
     expect(parse(component_1).outputs).toMatchObject([{
       description: "onClick output",
       name: "onClick",
@@ -55,7 +57,7 @@ describe('Parser Component 2', () => {
   it("should parse a components inputs", () => {
     expect(parse(component_2).inputs).toMatchObject([{
       name: "disabled",
-      type: "Boolean",
+      type: "boolean",
       value: false,
     }]);
   });

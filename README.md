@@ -30,7 +30,7 @@ export class Button {
   /**
    * Is button disabled
    */
-  @Input() disabled: Boolean = false;
+  @Input() disabled: boolean = false;
 
   /**
    * Button variant
@@ -61,12 +61,12 @@ export class Button {
   "inputs": [{
     "description": "Is button disabled",
     "name": "disabled",
-    "type": "Boolean",
+    "type": "boolean",
     "value": false
   }, {
     "description": "Button variant",
     "name": "type",
-    "variant": "String",
+    "variant": "string",
     "options": ["primary", "secondary"],
     "value": "primary"
   }],

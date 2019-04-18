@@ -9,6 +9,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types",

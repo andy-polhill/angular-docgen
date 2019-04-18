@@ -16,7 +16,7 @@ export default class SampleComponent {
    * Is component disabled
    * Two line comment
    */
-  @Input() disabled: Boolean = false;
+  @Input() disabled: boolean = false;
 
   /**
    * Type of component
