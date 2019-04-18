@@ -20,7 +20,9 @@ const getPropertyType = (node: ts.PropertyDeclaration): string | null => {
   return node.type.getText()
 };
 
-const getPropertyValue = (node: ts.PropertyDeclaration, type: string | null): string | number | boolean => {
+const getPropertyValue = (node: ts.PropertyDeclaration, type: string | null): string | number | boolean | null => {
+
+  if(!node.initializer) return null;
 
   const value = node.initializer!.getText();
 

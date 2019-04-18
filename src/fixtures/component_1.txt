@@ -29,8 +29,13 @@ export default class SampleComponent {
   @Input() count: number = 1;
 
   /**
+   * No default
+   */
+  @Input() empty: string;
+
+  /**
    * onClick output
    */
-
   @Output() onClick = new EventEmitter<boolean>();
+
 }

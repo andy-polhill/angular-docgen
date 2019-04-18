@@ -15,7 +15,7 @@ export interface PropertyDoc {
   name?: string;
   options?: (string | number)[] | null;
   type?: string | null;
-  value?: string | number | boolean;
+  value?: string | number | boolean | null;
 }
 
 export interface Doc {

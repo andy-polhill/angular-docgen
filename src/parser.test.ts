@@ -39,6 +39,10 @@ Two line comment`,
       name: "count",
       type: "number",
       value: 1
+    }, {
+      description: "No default",
+      name: "empty",
+      type: "string",
     }]);
   });
 
