@@ -42,10 +42,10 @@ const getConstructorProperty = (
   switch (initializer.kind) {
     case ts.SyntaxKind.ArrayLiteralExpression:
       return (<ts.ArrayLiteralExpression>initializer).elements.map(
-        (node: ts.Node) => node.getText().replace(/"/g, "")
+        (node: ts.Node) => node.getText().replace(/"|'/g, "")
       );
     default:
-      return initializer.getText().replace(/"/g, "");
+      return initializer.getText().replace(/"|'/g, "");
   }
 };
 
