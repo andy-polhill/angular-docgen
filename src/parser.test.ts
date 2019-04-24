@@ -13,7 +13,7 @@ let component_2: string = readFileSync(
 
 describe("Parser Component 1", () => {
   it("should parse a component decorator", () => {
-    expect(parse(component_1).component).toEqual({
+    expect(parse(component_1).component).toMatchObject({
       name: "SampleComponent",
       description: "Sample Component",
       templateUrl: "template.html",
@@ -80,7 +80,11 @@ with second line`,
 describe("Parser Component 2", () => {
   it("should parse a component decorator", () => {
     expect(parse(component_2).component).toMatchObject({
-      name: "SampleComponent"
+      name: "SampleComponent",
+      template: "<h1>Test</h1>",
+      styles: [
+        'h1 { font-weight: normal; }'
+      ]
     });
   });
 

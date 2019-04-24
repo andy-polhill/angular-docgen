@@ -7,7 +7,9 @@ export interface ComponentDoc {
   name?: string;
   selector?: string;
   styleUrls?: string[];
+  styles?: string[];
   templateUrl?: string;
+  template?: string;
 }
 
 export interface PropertyDoc {
