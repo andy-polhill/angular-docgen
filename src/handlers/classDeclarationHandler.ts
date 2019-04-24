@@ -42,10 +42,10 @@ const getConstructorProperty = (
   switch (initializer.kind) {
     case ts.SyntaxKind.ArrayLiteralExpression:
       return (<ts.ArrayLiteralExpression>initializer).elements.map(
-        (node: ts.Node) => node.getText().replace(/"/g, "")
+        (node: ts.Node) => node.getText().replace(/"|'/g, "")
       );
     default:
-      return initializer.getText().replace(/"/g, "");
+      return initializer.getText().replace(/"|'/g, "");
   }
 };
 
@@ -60,8 +60,10 @@ export default (node: ts.ClassDeclaration): ComponentDoc => {
       : null,
     name: className && className.getText(),
     selector: <string>getConstructorProperty(node, "selector"),
+    styles: <string[]>getConstructorProperty(node, "styles"),
     styleUrls: <string[]>getConstructorProperty(node, "styleUrls"),
-    templateUrl: <string>getConstructorProperty(node, "templateUrl")
+    templateUrl: <string>getConstructorProperty(node, "templateUrl"),
+    template: <string>getConstructorProperty(node, "template")
   };
 
   return componentDoc;

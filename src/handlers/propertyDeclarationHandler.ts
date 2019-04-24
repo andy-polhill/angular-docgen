@@ -39,7 +39,7 @@ const getPropertyValue = (
 
   const value = node.initializer!.getText();
 
-  if (!type) return value.replace(/"/g, "");
+  if (!type) return value.replace(/"|'/g, "");
 
   switch (type.toLowerCase()) {
     case "number": {
@@ -49,7 +49,7 @@ const getPropertyValue = (
       return value === "true" ? true : false;
     }
     default: {
-      return value.replace(/"/g, "");
+      return value.replace(/"|'/g, "");
     }
   }
 };
@@ -72,14 +72,14 @@ const getPropertyOptions = (node: ts.PropertyDeclaration): (string | number)[] |
     return typesNode.map((node: ts.TypeNode) => {
 
       if(ts.isLiteralTypeNode(node) && ts.isStringLiteral(node.literal)) {
-        return node.getText().replace(/"/g, '');
+        return node.getText().replace(/"|'/g, '');
       }
 
       if(ts.isLiteralTypeNode(node) && ts.SyntaxKind.FirstLiteralToken === node.literal.kind) {
         return parseInt(node.getText(), 10);
       }
 
-      return node.getText().replace(/"/g, '')
+      return node.getText().replace(/"|'/g, '')
     });
   }
 
