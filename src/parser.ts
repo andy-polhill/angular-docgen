@@ -8,6 +8,7 @@ export interface ComponentDoc {
   selector?: string;
   styleUrls?: string[];
   templateUrl?: string;
+  template?: string;
 }
 
 export interface PropertyDoc {

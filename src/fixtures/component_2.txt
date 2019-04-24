@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 
-@Component({})
+@Component({
+  template: '<div>Test</div>'
+})
 export default class SampleComponent {
 
   count: number = 1;

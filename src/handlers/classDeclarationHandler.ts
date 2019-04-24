@@ -61,7 +61,8 @@ export default (node: ts.ClassDeclaration): ComponentDoc => {
     name: className && className.getText(),
     selector: <string>getConstructorProperty(node, "selector"),
     styleUrls: <string[]>getConstructorProperty(node, "styleUrls"),
-    templateUrl: <string>getConstructorProperty(node, "templateUrl")
+    templateUrl: <string>getConstructorProperty(node, "templateUrl"),
+    template: <string>getConstructorProperty(node, "template")
   };
 
   return componentDoc;
