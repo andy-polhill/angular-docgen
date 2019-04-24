@@ -80,7 +80,11 @@ with second line`,
 describe("Parser Component 2", () => {
   it("should parse a component decorator", () => {
     expect(parse(component_2).component).toMatchObject({
-      name: "SampleComponent"
+      name: "SampleComponent",
+      template: "<h1>Test</h1>",
+      styles: [
+        'h1 { font-weight: normal; }'
+      ]
     });
   });
 
