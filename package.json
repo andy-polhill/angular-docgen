@@ -1,10 +1,11 @@
 {
   "name": "angular-docgen",
   "version": "1.0.0-alpha.3",
-  "description": "Low level library for creating decscriptions of angular components",
+  "description": "A toolkit to extract information from Angular components for documentation generation.",
   "main": "dist/parser.js",
   "types": "dist/parser.d.ts",
   "repository": "git@github.com:thatguynamedandy/angular-docgen.git",
+  "bugs": "https://github.com/thatguynamedandy/angular-docgen/issues",
   "scripts": {
     "test": "jest ./src",
     "build": "tsc",
@@ -12,8 +13,13 @@
     "prepublish": "npm run build"
   },
   "engines": {
-    "node": "10.4.1"
+    "node": ">=6"
   },
+  "keywords": [
+    "angular",
+    "pattern-library",
+    "documentation-generation"
+  ],
   "author": "thatguynamedandy",
   "license": "ISC",
   "devDependencies": {
