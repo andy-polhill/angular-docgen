@@ -1,23 +1,25 @@
-import parse from './parser';
-import { readFileSync } from 'fs';
-import { resolve } from 'path'
+import parse from "./parser";
+import { readFileSync } from "fs";
+import { resolve } from "path";
 
-let component_1: string = readFileSync(resolve(__dirname, './fixtures/component_1.txt'), 'utf8').toString();
-let component_2: string = readFileSync(resolve(__dirname, './fixtures/component_2.txt'), 'utf8').toString();
+let component_1: string = readFileSync(
+  resolve(__dirname, "./fixtures/component_1.txt"),
+  "utf8"
+).toString();
+let component_2: string = readFileSync(
+  resolve(__dirname, "./fixtures/component_2.txt"),
+  "utf8"
+).toString();
 
-describe('Parser Component 1', () => {
-
+describe("Parser Component 1", () => {
   it("should parse a component decorator", () => {
     expect(parse(component_1).component).toEqual({
-        name: "SampleComponent",
-        description: "Sample Component",
-        templateUrl: "template.html",
-        selector: "my-button",
-        styleUrls: [
-          "styles1.css",
-          "styles2.css",
-        ]
-      });
+      name: "SampleComponent",
+      description: "Sample Component",
+      templateUrl: "template.html",
+      selector: "my-button",
+      styleUrls: ["styles1.css", "styles2.css"]
+    });
   });
 
   it("should parse a components inputs", () => {
@@ -67,7 +69,6 @@ with second line`,
   });
 
   it('should parse a components outputs', () => {
-
     expect(parse(component_1).outputs).toMatchObject([{
       description: "output property",
       name: "onClick",
@@ -76,22 +77,24 @@ with second line`,
   });
 });
 
-describe('Parser Component 2', () => {
+describe("Parser Component 2", () => {
   it("should parse a component decorator", () => {
     expect(parse(component_2).component).toMatchObject({
-        name: "SampleComponent"
-      });
+      name: "SampleComponent"
+    });
   });
 
   it("should parse a components inputs", () => {
-    expect(parse(component_2).inputs).toMatchObject([{
-      name: "disabled",
-      type: "boolean",
-      value: false,
-    }]);
+    expect(parse(component_2).inputs).toMatchObject([
+      {
+        name: "disabled",
+        type: "boolean",
+        value: false
+      }
+    ]);
   });
 
-  it('should parse a components outputs', () => {
+  it("should parse a components outputs", () => {
     expect(parse(component_2).outputs).toMatchObject([]);
   });
 });
