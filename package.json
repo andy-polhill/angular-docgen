@@ -13,7 +13,7 @@
     "prepublish": "npm run build"
   },
   "engines": {
-    "node": "10.4.1"
+    "node": ">=6"
   },
   "keywords": [
     "angular",
